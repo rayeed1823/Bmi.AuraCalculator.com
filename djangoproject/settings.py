@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-gi3(v0-7@)*j86%o!(#=#(!htkdsgc)4xmnzoqj9149)2)7-+*
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['bmi-auracalculator-com.onrender.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
