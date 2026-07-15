@@ -44,10 +44,12 @@ def bmi_calculator(request):
             else:
                 category = "Obese"
 
-            context = {
-                'bmi': bmi,
-                'category': category,
-                'age': age,
-                'gender': gender,
-            }
-            return render(request, 'index.html', context)
+
+
+        context = {
+            'bmi': bmi if 'bmi' in locals() else None,
+            'category': category if 'category' in locals() else "",
+            'age': age if 'age' in locals() else 25,
+            'gender': gender if 'gender' in locals() else "other",
+        }
+        return render(request, 'index.html', context)
