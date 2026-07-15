@@ -145,6 +145,58 @@
             color: var(--text-main);
             opacity: 0.9;
         }
+        /* Dynamic dial variables */
+        :root {
+            --dial-angle: 0deg;
+            --dial-color: var(--neon-cyan);
+        }
+
+        .cyber-dial-container {
+            display: flex;
+            justify-content: center;
+            margin: 25px 0;
+        }
+
+        .cyber-dial {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--dial-color) var(--dial-angle),
+                rgba(255, 255, 255, 0.05) var(--dial-angle)
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .dial-inner {
+            width: 150px;
+            height: 150px;
+            background-color: #111422;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(255, 255, 255, 0.05);
+        }
+
+        #bmiDisplay {
+            font-size: 36px;
+            font-weight: 800;
+            color: #ffffff;
+        }
+
+        .cyber-dial-container .label {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-top: 2px;
+        }
     </style>
 </head>
 <body>
@@ -193,28 +245,86 @@
 
     {% if bmi %}
     <div class="result-display">
-        <div class="bmi-number">Your BMI is: <span>{{ bmi|floatformat:2 }}</span></div>
+        <div class="cyber-dial-container">
+            <div class="cyber-dial" id="bmiDial">
+                <div class="dial-inner">
+                    <span id="bmiDisplay">{{ bmi|floatformat:1 }}</span>
+                    <span class="label">BMI</span>
+                </div>
+            </div>
+        </div>
 
         <div class="status-title">Current Status</div>
-        <div class="status-badge">{{ category|upper }}</div>
+        <div class="status-badge" id="statusBadge">{{ category|upper }}</div>
 
         <div class="status-message">
-            {% if category == "Normal weight" %}
-                You are doing fine! Keep maintaining your health.
-            {% elif category == "Underweight" %}
-                You are a bit under your ideal weight.
-            {% elif category == "Overweight" %}
-                You are slightly above your ideal weight range.
-            {% else %}
-                Your weight falls into the obese range.
-            {% endif %}
+            <span id="dynamicFeedback"></span>
+        </div>
+    </div>
+    {% endif %}
         </div>
     </div>
     {% endif %}
 </div>
 
 <script>
-    function toggleHeightFields() {
+    function toggleHeightFields()
+    window.addEventListener('DOMContentLoaded', () => {
+        // Fetch values safely injected by Django (defaulting to 0 if not calculated yet)
+        const bmi = parseFloat("{{ bmi|default:0 }}");
+        const category = "{{ category|default:'' }}".toLowerCase();
+
+        // Grab elements we need to manipulate
+        const dial = document.getElementById('bmiDial');
+        const display = document.getElementById('bmiDisplay');
+        const feedbackContainer = document.getElementById('dynamicFeedback');
+        const badge = document.getElementById('statusBadge');
+
+        // Exit out early if no calculation has occurred yet
+        if (!bmi || !dial) return;
+
+        // 1. CHOOSE THE NEON COLOR MATRICES BASED ON STATUS
+        let colorHex = "var(--neon-cyan)";
+        let evaluationText = "";
+
+        if (category.includes("underweight")) {
+            colorHex = "#00f0ff"; // Ice Blue
+            badge.style.color = colorHex;
+            badge.style.textShadow = `0 0 20px ${colorHex}`;
+            evaluationText = "SYSTEM // UNDERWEIGHT ALERT: Mass configuration below nominal thresholds. Target calibration indicates a surplus intake protocol required to reach a normal baseline distribution.";
+        } else if (category.includes("normal")) {
+            colorHex = "#39ff14"; // Neon Green
+            badge.style.color = colorHex;
+            badge.style.textShadow = `0 0 20px ${colorHex}`;
+            evaluationText = "SYSTEM OPTIMAL: Structural matrix verified. Maintenance routine authorized. Parameters sitting safely within expected operational baselines.";
+        } else if (category.includes("overweight")) {
+            colorHex = "var(--neon-magenta)"; // Neon Magenta
+            badge.style.color = colorHex;
+            badge.style.textShadow = `0 0 20px ${colorHex}`;
+            evaluationText = "WARNING // OVERWEIGHT DETECTION: Target metrics read slightly above baseline guidelines. Actionable recommendation: caloric optimization and expenditure adjustments to drop down to normal tracking bounds.";
+        } else if (category.includes("obese")) {
+            colorHex = "#ff3131"; // Neon Red
+            badge.style.color = colorHex;
+            badge.style.textShadow = `0 0 20px ${colorHex}`;
+            evaluationText = "CRITICAL // SIGNAL ALERT: Mass accumulation has breached nominal limits. Remedial lifestyle intervention or expert consultation flagged for structural health recovery parameters.";
+        }
+
+
+        feedbackContainer.innerText = evaluationText;
+
+
+        let percent = (bmi - 15) / (40 - 15);
+        percent = Math.min(Math.max(percent, 0), 1); // Stay between 0% and 100%
+        const degrees = percent * 360
+
+        /
+        dial.style.setProperty('--dial-angle', `${degrees}deg`);
+        dial.style.setProperty('--dial-color', colorHex);
+        dial.style.boxShadow = `0 0 25px ${colorHex}`;
+        if(display) {
+            display.style.textShadow = `0 0 15px ${colorHex}`;
+        }
+    }); {
         const unit = document.getElementById('height_unit').value;
         const ftInputs = document.getElementById('ft_inputs');
         const cmInput = document.getElementById('cm_input');

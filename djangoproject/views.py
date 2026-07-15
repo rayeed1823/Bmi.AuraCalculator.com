@@ -20,7 +20,8 @@ def bmi_calculator(request):
             cm = float(request.POST.get("cm") or 0)
             height_m = cm * 0.01
 
-
+        age = int(request.POST.get("age") or 25)
+        gender = request.POST.get("gender") or "other"
         weight_unit = request.POST.get("weight_unit")
         weight_input = float(request.POST.get("weight") or 0)
         weight_kg = 0.0
@@ -43,11 +44,10 @@ def bmi_calculator(request):
             else:
                 category = "Obese"
 
-
             context = {
-                "bmi": bmi,
-                "category": category
+                'bmi': bmi,
+                'category': category,
+                'age': age,
+                'gender': gender,
             }
-
-
-    return render(request, "index.html", context)
+            return render(request, 'index.html', context)
