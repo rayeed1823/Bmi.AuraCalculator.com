@@ -12,6 +12,8 @@
             --text-main: #f1f5f9;
             --text-dim: #94a3b8;
             --border-glow: rgba(0, 240, 255, 0.25);
+            --dial-angle: 0deg;
+            --dial-color: var(--neon-cyan);
         }
 
         body {
@@ -100,26 +102,11 @@
             box-shadow: 0 0 25px rgba(0, 240, 255, 0.7);
         }
 
-        /* Redesigned Result Section - No more harsh box! */
         .result-display {
             margin-top: 40px;
             text-align: center;
             border-top: 1px dashed rgba(255, 255, 255, 0.1);
             padding-top: 30px;
-        }
-
-        .bmi-number {
-            font-size: 18px;
-            color: var(--text-dim);
-            margin-bottom: 10px;
-        }
-
-        .bmi-number span {
-            font-size: 28px;
-            font-weight: 800;
-            color: #ffffff;
-            text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
-            margin-left: 5px;
         }
 
         .status-title {
@@ -141,14 +128,10 @@
         }
 
         .status-message {
-            font-size: 16px;
+            font-size: 15px;
+            line-height: 1.5;
             color: var(--text-main);
             opacity: 0.9;
-        }
-        /* Dynamic dial variables */
-        :root {
-            --dial-angle: 0deg;
-            --dial-color: var(--neon-cyan);
         }
 
         .cyber-dial-container {
@@ -262,69 +245,10 @@
         </div>
     </div>
     {% endif %}
-        </div>
-    </div>
-    {% endif %}
 </div>
 
 <script>
-    function toggleHeightFields()
-    window.addEventListener('DOMContentLoaded', () => {
-        // Fetch values safely injected by Django (defaulting to 0 if not calculated yet)
-        const bmi = parseFloat("{{ bmi|default:0 }}");
-        const category = "{{ category|default:'' }}".toLowerCase();
-
-        // Grab elements we need to manipulate
-        const dial = document.getElementById('bmiDial');
-        const display = document.getElementById('bmiDisplay');
-        const feedbackContainer = document.getElementById('dynamicFeedback');
-        const badge = document.getElementById('statusBadge');
-
-        // Exit out early if no calculation has occurred yet
-        if (!bmi || !dial) return;
-
-        // 1. CHOOSE THE NEON COLOR MATRICES BASED ON STATUS
-        let colorHex = "var(--neon-cyan)";
-        let evaluationText = "";
-
-        if (category.includes("underweight")) {
-            colorHex = "#00f0ff"; // Ice Blue
-            badge.style.color = colorHex;
-            badge.style.textShadow = `0 0 20px ${colorHex}`;
-            evaluationText = "SYSTEM // UNDERWEIGHT ALERT: Mass configuration below nominal thresholds. Target calibration indicates a surplus intake protocol required to reach a normal baseline distribution.";
-        } else if (category.includes("normal")) {
-            colorHex = "#39ff14"; // Neon Green
-            badge.style.color = colorHex;
-            badge.style.textShadow = `0 0 20px ${colorHex}`;
-            evaluationText = "SYSTEM OPTIMAL: Structural matrix verified. Maintenance routine authorized. Parameters sitting safely within expected operational baselines.";
-        } else if (category.includes("overweight")) {
-            colorHex = "var(--neon-magenta)"; // Neon Magenta
-            badge.style.color = colorHex;
-            badge.style.textShadow = `0 0 20px ${colorHex}`;
-            evaluationText = "WARNING // OVERWEIGHT DETECTION: Target metrics read slightly above baseline guidelines. Actionable recommendation: caloric optimization and expenditure adjustments to drop down to normal tracking bounds.";
-        } else if (category.includes("obese")) {
-            colorHex = "#ff3131"; // Neon Red
-            badge.style.color = colorHex;
-            badge.style.textShadow = `0 0 20px ${colorHex}`;
-            evaluationText = "CRITICAL // SIGNAL ALERT: Mass accumulation has breached nominal limits. Remedial lifestyle intervention or expert consultation flagged for structural health recovery parameters.";
-        }
-
-
-        feedbackContainer.innerText = evaluationText;
-
-
-        let percent = (bmi - 15) / (40 - 15);
-        percent = Math.min(Math.max(percent, 0), 1); // Stay between 0% and 100%
-        const degrees = percent * 360
-
-        /
-        dial.style.setProperty('--dial-angle', `${degrees}deg`);
-        dial.style.setProperty('--dial-color', colorHex);
-        dial.style.boxShadow = `0 0 25px ${colorHex}`;
-        if(display) {
-            display.style.textShadow = `0 0 15px ${colorHex}`;
-        }
-    }); {
+    function toggleHeightFields() {
         const unit = document.getElementById('height_unit').value;
         const ftInputs = document.getElementById('ft_inputs');
         const cmInput = document.getElementById('cm_input');
@@ -337,6 +261,58 @@
             cmInput.style.display = 'block';
         }
     }
+
+    window.addEventListener('DOMContentLoaded', () => {
+        const bmi = parseFloat("{{ bmi|default:0 }}");
+        const category = "{{ category|default:'' }}".toLowerCase();
+
+        const dial = document.getElementById('bmiDial');
+        const display = document.getElementById('bmiDisplay');
+        const feedbackContainer = document.getElementById('dynamicFeedback');
+        const badge = document.getElementById('statusBadge');
+
+        if (!bmi || !dial) return;
+
+        let colorHex = "var(--neon-cyan)";
+        let evaluationText = "";
+
+        if (category.includes("underweight")) {
+            colorHex = "#00f0ff";
+            badge.style.color = colorHex;
+            badge.style.textShadow = `0 0 20px ${colorHex}`;
+            evaluationText = "SYSTEM // UNDERWEIGHT ALERT: Mass configuration below nominal thresholds. Target calibration indicates a surplus intake protocol required to reach a normal baseline distribution.";
+        } else if (category.includes("normal")) {
+            colorHex = "#39ff14";
+            badge.style.color = colorHex;
+            badge.style.textShadow = `0 0 20px ${colorHex}`;
+            evaluationText = "SYSTEM OPTIMAL: Structural matrix verified. Maintenance routine authorized. Parameters sitting safely within expected operational baselines.";
+        } else if (category.includes("overweight")) {
+            colorHex = "var(--neon-magenta)";
+            badge.style.color = colorHex;
+            badge.style.textShadow = `0 0 20px ${colorHex}`;
+            evaluationText = "WARNING // OVERWEIGHT DETECTION: Target metrics read slightly above baseline guidelines. Actionable recommendation: caloric optimization and expenditure adjustments to drop down to normal tracking bounds.";
+        } else if (category.includes("obese")) {
+            colorHex = "#ff3131";
+            badge.style.color = colorHex;
+            badge.style.textShadow = `0 0 20px ${colorHex}`;
+            evaluationText = "CRITICAL // SIGNAL ALERT: Mass accumulation has breached nominal limits. Remedial lifestyle intervention or expert consultation flagged for structural health recovery parameters.";
+        }
+
+        if (feedbackContainer) {
+            feedbackContainer.innerText = evaluationText;
+        }
+
+        let percent = (bmi - 15) / (40 - 15);
+        percent = Math.min(Math.max(percent, 0), 1);
+        const degrees = percent * 360;
+
+        dial.style.setProperty('--dial-angle', `${degrees}deg`);
+        dial.style.setProperty('--dial-color', colorHex);
+        dial.style.boxShadow = `0 0 25px ${colorHex}`;
+        if (display) {
+            display.style.textShadow = `0 0 15px ${colorHex}`;
+        }
+    });
 </script>
 
 </body>
