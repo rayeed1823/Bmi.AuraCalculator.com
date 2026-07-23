@@ -36,7 +36,8 @@ def bmi_calculator(request):
         if height_m > 0 and weight_kg > 0:
             bmi = weight_kg / (height_m ** 2)
 
-            if bmi <= 18.5:
+            # Updated range check (strictly less than 18.5)
+            if bmi < 18.5:
                 category = "Underweight"
             elif 18.5 <= bmi < 25:
                 category = "Normal weight"
@@ -45,7 +46,6 @@ def bmi_calculator(request):
             else:
                 category = "Obese"
 
-    # CRITICAL: This block sits outside the POST block (indented exactly 4 spaces)
     context = {
         'bmi': bmi,
         'category': category,

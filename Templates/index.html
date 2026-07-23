@@ -9,33 +9,40 @@
   "url": "https://bmi-auracalculator-com.onrender.com/"
 }
 </script>
-    <meta name="google-site-verification" content="MatbD6csCo_RX8zzYBPbsnmw5VbQTZQyB4R8fhVIirY" />
+    <meta name="google-site-verification" content="MatbD6csCo_RX8zzYBPbsnmwD5VbQTZQyB4R8fhVIirY" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aura Scale | BMI Calculator</title>
-    <style>
-        :root {
-            --bg-color: #0d0f17;
-            --panel-bg: rgba(20, 24, 38, 0.8);
-            --neon-cyan: #00f0ff;
-            --neon-magenta: #ff0055;
-            --text-main: #f1f5f9;
-            --text-dim: #94a3b8;
-            --border-glow: rgba(0, 240, 255, 0.25);
-            --dial-angle: 0deg;
-            --dial-color: var(--neon-cyan);
-        }
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&display=swap" rel="stylesheet">
+   <style>
+    :root {
+        --bg-color: #0d0f17;
+        --panel-bg: rgba(20, 24, 38, 0.8);
+        --neon-cyan: #00f0ff;
+        --neon-magenta: #ff0055;
+        --text-main: #f1f5f9;
+        --text-dim: #94a3b8;
+        --border-glow: rgba(0, 240, 255, 0.25);
+        --dial-angle: 0deg;
+        --dial-color: var(--neon-cyan);
+    }
 
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 60px 20px;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            background-image:
-                linear-gradient(rgba(0, 240, 255, 0.02) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px);
-            background-size: 25px 25px;
-        }
+    .audiowide-text {
+        font-family: 'Audiowide', cursive, sans-serif;
+        letter-spacing: 2px;
+    }
 
+    body {
+        font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        margin: 0;
+        padding: 60px 20px;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        background-image:
+            linear-gradient(rgba(0, 240, 255, 0.02) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 240, 255, 0.02) 1px, transparent 1px);
+        background-size: 25px 25px;
+    }
         .container {
             max-width: 460px;
             margin: 0 auto;
@@ -188,12 +195,160 @@
             text-transform: uppercase;
             margin-top: 2px;
         }
+
+        /* Informational Cards Styling */
+        .info-wrapper {
+            max-width: 800px;
+            margin: 40px auto 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+
+        .info-card {
+            background: var(--panel-bg);
+            padding: 30px;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(12px);
+        }
+
+        .info-card h2 {
+            text-align: left;
+            font-size: 20px;
+            color: var(--neon-cyan);
+            border-bottom: 1px dashed rgba(0, 240, 255, 0.3);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .info-card p {
+            font-size: 15px;
+            line-height: 1.7;
+            color: var(--text-main);
+            margin-bottom: 12px;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        .bmi-table, .formula-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .bmi-table th, .bmi-table td,
+        .formula-table th, .formula-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            vertical-align: top;
+        }
+
+        .bmi-table th, .formula-table th {
+            color: var(--text-dim);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        .tag {
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .tag.blue { color: #00f0ff; background: rgba(0, 240, 255, 0.1); }
+        .tag.green { color: #39ff14; background: rgba(57, 255, 20, 0.1); }
+        .tag.pink { color: var(--neon-magenta); background: rgba(255, 0, 85, 0.1); }
+        .tag.red { color: #ff3131; background: rgba(255, 49, 49, 0.1); }
+
+        .formula-table code {
+            color: var(--neon-cyan);
+            font-family: monospace;
+            font-size: 14px;
+            background: rgba(10, 11, 18, 0.6);
+            padding: 4px 8px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .info-list {
+            margin: 0;
+            padding-left: 20px;
+            color: var(--text-main);
+            line-height: 1.7;
+        }
+
+        .info-list li {
+            margin-bottom: 8px;
+        }
+
+        /* Pros and Cons Side-by-Side Grid */
+        .pros-cons-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .pros-cons-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .pro-con-box {
+            background: rgba(10, 11, 18, 0.6);
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pro-box {
+            border-left: 3px solid #39ff14;
+        }
+
+        .con-box {
+            border-left: 3px solid var(--neon-magenta);
+        }
+
+        .pro-con-header {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+        }
+
+        .pro-header {
+            color: #39ff14;
+        }
+
+        .con-header {
+            color: var(--neon-magenta);
+        }
+
+        .pro-con-box .info-list {
+            padding-left: 18px;
+        }
+
+        .pro-con-box .info-list li {
+            font-size: 13.5px;
+            line-height: 1.6;
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h2>BMI Calculator</h2>
+    <h2><span class="audiowide-text">BMI</span> Calculator</h2>
     <form method="POST">
         {% csrf_token %}
 
@@ -230,20 +385,21 @@
             <label for="weight">Weight Value</label>
             <input type="number" step="any" name="weight" required placeholder="0.0" min="0">
         </div>
-<div class="form-group">
-    <label for="age">Age</label>
-    <input type="number" id="age" name="age" min="1" max="120" placeholder="Enter age" required>
-</div>
 
-<div class="form-group">
-    <label for="gender">Gender</label>
-    <select id="gender" name="gender" required>
-        <option value="" disabled selected>Select gender</option>
-        <option value="male">Male</option>
-        <option value="female">Female</option>
-        <option value="other">Other</option>
-    </select>
-</div>
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" name="age" min="1" max="120" placeholder="Enter age" required>
+        </div>
+
+        <div class="form-group">
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+                <option value="" disabled selected>Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
         <button type="submit">Calculate BMI</button>
     </form>
 
@@ -266,6 +422,116 @@
         </div>
     </div>
     {% endif %}
+</div>
+
+<!-- Informational Content Zone -->
+<div class="info-wrapper">
+    <section class="info-card">
+        <h2>What is Body Mass Index (BMI)?</h2>
+        <p>
+            Body Mass Index (BMI) is a standardized screening metric used globally by health professionals to estimate whether an individual carries a healthy weight relative to their height. Developed in the 19th century by Belgian mathematician Lambert Adolphe Jacques Quetelet, the index serves as a non-invasive, quick indicator of overall body composition category.
+        </p>
+        <p>
+            While BMI does not directly measure body fat percentage, it correlates closely with direct fat-measurement protocols such as underwater weighing and dual-energy X-ray absorptiometry (DEXA).
+        </p>
+    </section>
+
+    <section class="info-card">
+        <h2>BMI Categories & Health Classifications</h2>
+        <p>The World Health Organization (WHO) divides BMI scores into standard categories for adults aged 20 and over:</p>
+
+        <div class="table-container">
+            <table class="bmi-table">
+                <thead>
+                    <tr>
+                        <th>BMI Range (kg/m²)</th>
+                        <th>Classification</th>
+                        <th>Associated Health Risk</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Less than 18.5</td>
+                        <td><span class="tag blue">Underweight</span></td>
+                        <td>Nutritional deficiency, lower immunity</td>
+                    </tr>
+                    <tr>
+                        <td>18.5 – 24.9</td>
+                        <td><span class="tag green">Normal / Optimal</span></td>
+                        <td>Lowest risk threshold</td>
+                    </tr>
+                    <tr>
+                        <td>25.0 – 29.9</td>
+                        <td><span class="tag pink">Overweight</span></td>
+                        <td>Moderate cardiovascular load</td>
+                    </tr>
+                    <tr>
+                        <td>30.0 or greater</td>
+                        <td><span class="tag red">Obese</span></td>
+                        <td>Elevated risk for metabolic conditions</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="info-card">
+        <h2>How is BMI Calculated?</h2>
+        <p>BMI is calculated using a standard mathematical formula that measures body mass relative to height. The calculation varies depending on whether metric or imperial units are used:</p>
+
+        <div class="table-container">
+            <table class="formula-table">
+                <thead>
+                    <tr>
+                        <th>Measurement System</th>
+                        <th>Mathematical Formula</th>
+                        <th>Variable Breakdown</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Metric System</strong></td>
+                        <td><code>BMI = weight / (height)²</code></td>
+                        <td>Weight in kilograms (kg)<br>Height in meters (m)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Imperial System</strong></td>
+                        <td><code>BMI = 703 × weight / (height)²</code></td>
+                        <td>Weight in pounds (lbs)<br>Height in inches (in)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <section class="info-card">
+        <h2>Why Trust BMI? Pros & Cons</h2>
+        <p>
+            Body Mass Index remains the standard initial screening tool used by global health authorities like the World Health Organization (WHO) and the CDC. While highly reliable for general population trends, it has distinct advantages and limitations when applied to individuals.
+        </p>
+
+        <div class="pros-cons-grid">
+            <div class="pro-con-box pro-box">
+                <div class="pro-con-header pro-header">✓ Advantages (Pros)</div>
+                <ul class="info-list">
+                    <li><strong>Universal Standard:</strong> Provides a consistent, globally recognized benchmark across populations.</li>
+                    <li><strong>Non-Invasive & Free:</strong> Requires no expensive clinical equipment, bloodwork, or specialized testing.</li>
+                    <li><strong>Strong Risk Correlation:</strong> Effectively highlights population-level trends for cardiovascular and metabolic risks.</li>
+                    <li><strong>Quick Initial Screening:</strong> Helps doctors rapidly identify individuals who may benefit from deeper health evaluations.</li>
+                </ul>
+            </div>
+
+            <div class="pro-con-box con-box">
+    <div class="pro-con-header con-header">✕ Limitations (Cons)</div>
+    <ul class="info-list">
+        <li><strong>Ignores Muscle vs. Fat:</strong> Cannot distinguish between dense muscle mass and adipose (fat) tissue.</li>
+        <li><strong>No Fat Distribution Data:</strong> Misses dangerous visceral fat stored around abdominal organs.</li>
+        <li><strong>Ignores Bone & Frame Size:</strong> Does not account for skeletal frame size or dense bone structure, which can naturally alter weight without adding body fat.</li>
+        <li><strong>Not a Diagnosis:</strong> Functions purely as a screening flag, not a complete assessment of individual health.</li>
+    </ul>
+</div>
+        </div>
+    </section>
 </div>
 
 <script>
